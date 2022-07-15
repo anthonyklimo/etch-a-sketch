@@ -2,58 +2,40 @@ let gridSize = 256;
 
 const gridContainer = document.querySelector('#gridContainer');
 
-/* buttons to choose size of grid*/
-const sizeButtons = document.querySelector('#sizeButtons');
+var slider = document.getElementById("myRange");
+var output = document.querySelector(".size");
+output.innerHTML = `Size: ${slider.value} x ${slider.value}`;
 
-const smallButton = document.createElement('button');
-const medButton = document.createElement('button');
-const largeButton = document.createElement('button');
-
-smallButton.classList.add('smallButton');
-medButton.classList.add('smallButton');
-largeButton.classList.add('largeButton');
-
-smallButton.textContent = '16x16';
-medButton.textContent = '32x32';
-largeButton.textContent = '64x64';
-
-sizeButtons.appendChild(smallButton);
-sizeButtons.appendChild(medButton);
-sizeButtons.appendChild(largeButton);
-
-smallButton.addEventListener("click", function() {
+slider.oninput = function() {
+    output.innerHTML = `Size: ${this.value} x ${this.value}`;
     unMakeGrid();
-    gridSize = 256;
+    gridSize = (this.value ** 2);
     makeGrid();
-    changeGridSize(16);
-
-});
-medButton.addEventListener("click", function() {
-    unMakeGrid();
-    gridSize = 1024;
-    makeGrid();
-    changeGridSize(32);
-});
-largeButton.addEventListener("click", function() {
-    unMakeGrid();
-    gridSize = 4096;
-    makeGrid();
-    changeGridSize(64);
-});
+    changeGridSize(this.value);
+}
 
 const drawButtons = document.querySelector('#drawButtons');
+const blackButton = document.createElement('button');
 const rainbowButton = document.createElement('button');
 const shaderButton = document.createElement('button');
-const whiteButton = document.createElement('button');
+const eraserButton = document.createElement('button');
 
-whiteButton.textContent = 'White';
+blackButton.textContent = 'Black';
 rainbowButton.textContent = 'Rainbow';
 shaderButton.textContent = 'Shader';
+eraserButton.textContent = 'Eraser';
 
-drawButtons.append(rainbowButton, shaderButton, whiteButton);
+drawButtons.append(blackButton, rainbowButton, shaderButton, eraserButton);
 
 
-whiteButton.addEventListener('click', function() {
+blackButton.addEventListener('click', function() {
+    gridContainer.addEventListener("mouseover", function(e) {
+        e.target.style.backgroundColor = 'black';
+        e.target.style
+    })
+});
+
+eraserButton.addEventListener('click', function() {
     gridContainer.addEventListener("mouseover", function(e) {
         e.target.style.backgroundColor = 'white';
     })
@@ -75,15 +57,16 @@ function rainbowInk() {
 
 
 /*make grid of n boxes */
+
 function makeGrid() {
     
     for (let i = 0; i < gridSize; i++) {
         const box = document.createElement('div');
         box.classList.add('box');
-        box.style.backgroundColor ='black';
+        box.style.backgroundColor ='white';
         gridContainer.appendChild(box);
         box.addEventListener("mouseover", function(e) {
-            e.target.style.backgroundColor = 'white';
+            e.target.style.backgroundColor = 'black';
         });
         }
 }
